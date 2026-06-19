@@ -1,0 +1,17 @@
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  background: url(../../assets/Header-background.jpg) no-repeat center center;
+}
+.header__content {
+}
+.header__caption {
+}
+.header__title {
+}
+.header__description {
+}
