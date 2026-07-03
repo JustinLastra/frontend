@@ -3,15 +3,59 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 80px 20px;
   background: url(../../assets/Header-background.jpg) no-repeat center center;
+  background-size: cover;
+  min-height: 576px;
 }
+
+.header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 27, 34, 0.5) 0%,
+    rgba(26, 27, 34, 0.4) 100%
+  );
+  pointer-events: none;
+}
+
+.header > * {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
 .header__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 80px 104px 80px;
+  max-width: 1440px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
-.header__caption {
-}
+
 .header__title {
+  font-size: 60px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 32px;
+  line-height: 1.1;
+  max-width: 608px;
 }
+
+.header__caption {
+  display: none;
+}
+
 .header__description {
+  font-size: 18px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 48px;
+  max-width: 608px;
+  line-height: 1.5;
+  opacity: 0.9;
 }

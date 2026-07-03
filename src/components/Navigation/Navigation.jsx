@@ -1,15 +1,24 @@
 import "./Navigation.css";
 
 function Navigation({ isSavedPage = false, onLoginClick, onRegisterClick }) {
+  const homeLinkClass = `navigation__link${!isSavedPage ? " navigation__link_active" : ""}`;
+  const savedLinkClass = `navigation__link${isSavedPage ? " navigation__link_active" : ""}`;
+
   return (
     <nav className="navigation">
-      <a className="navigation__logo" href="#" />
+      <a className="navigation__logo" href="#">
+        NewsExplorer
+      </a>
       <ul className="navigation__links">
         <li>
-          <a className="navigation__link" href="#" />
+          <a className={homeLinkClass} href="#">
+            Home
+          </a>
         </li>
         <li>
-          <a className="navigation__link" href="#saved-news" />
+          <a className={savedLinkClass} href="#">
+            Saved Articles
+          </a>
         </li>
       </ul>
       {!isSavedPage && (
@@ -18,12 +27,10 @@ function Navigation({ isSavedPage = false, onLoginClick, onRegisterClick }) {
             type="button"
             className="navigation__button"
             onClick={onLoginClick}
-          />
-          <button
-            type="button"
-            className="navigation__button navigation__button_primary"
-            onClick={onRegisterClick}
-          />
+          >
+            {" "}
+            Sign In
+          </button>
         </div>
       )}
     </nav>
