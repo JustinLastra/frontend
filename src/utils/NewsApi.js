@@ -2,6 +2,12 @@ const newsApiBaseUrl = import.meta.env.PROD
   ? "https://nomoreparties.co/news/v2/everything"
   : "https://newsapi.org/v2/everything";
 
+const PLACEHOLDER_API_KEYS = new Set([
+  "",
+  "your_news_api_key_here",
+  "your_key_here",
+]);
+
 const mockArticles = [
   {
     source: { name: "Tech Daily" },
@@ -92,12 +98,20 @@ function filterMockArticles(keyword) {
   return filtered.length > 0 ? filtered : mockArticles;
 }
 
-export async function searchNews(keyword) {
-  const apiKey = import.meta.env.VITE_NEWS_API_KEY;
+function hasValidApiKey(apiKey) {
+  return apiKey && !PLACEHOLDER_API_KEYS.has(apiKey.trim());
+}
 
-  if (!apiKey) {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return filterMockArticles(keyword);
+async function getMockArticles(keyword) {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return filterMockArticles(keyword);
+}
+
+export async function searchNews(keyword) {
+  const apiKey = import.meta.env.VITE_NEWS_API_KEY?.trim();
+
+  if (!hasValidApiKey(apiKey)) {
+    return getMockArticles(keyword);
   }
 
   const { from, to } = getDateRange();
@@ -109,12 +123,21 @@ export async function searchNews(keyword) {
     pageSize: "100",
   });
 
-  const response = await fetch(`${newsApiBaseUrl}?${params.toString()}`);
+  try {
+    const response = await fetch(`${newsApiBaseUrl}?${params.toString()}`);
+    const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error("News API request failed");
+    if (!response.ok || data.status === "error") {
+      throw new Error(data.message || "News API request failed");
+    }
+
+    return data.articles || [];
+  } catch (error) {
+    if (!import.meta.env.PROD) {
+      console.warn("News API unavailable, using mock data:", error.message);
+      return getMockArticles(keyword);
+    }
+
+    throw error;
   }
-
-  const data = await response.json();
-  return data.articles || [];
 }
