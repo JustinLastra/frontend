@@ -1,5 +1,77 @@
-/* .main */
-/* .main__results */
-/* .main__title */
-/* .main__grid */
-/* .main__item */
+.main {
+  background: #f5f6f7;
+}
+
+.main__results {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 80px 104px;
+  box-sizing: border-box;
+}
+
+.main__title {
+  margin: 0 0 64px;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 46px;
+  color: #1a1b22;
+}
+
+.main__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main__message {
+  margin: 0;
+  font-size: 18px;
+  line-height: 24px;
+  color: #1a1b22;
+  text-align: center;
+}
+
+.main__message_error {
+  color: #ff0000;
+}
+
+.main__show-more {
+  display: block;
+  margin: 64px auto 0;
+  width: 288px;
+  height: 64px;
+  border: 1px solid #1a1b22;
+  border-radius: 80px;
+  background: transparent;
+  color: #1a1b22;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.main__show-more:hover {
+  background: #1a1b22;
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .main__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .main__results {
+    padding: 40px 16px;
+  }
+
+  .main__grid {
+    grid-template-columns: 1fr;
+  }
+}

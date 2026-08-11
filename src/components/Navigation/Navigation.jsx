@@ -1,38 +1,63 @@
+import { NavLink } from "react-router-dom";
 import "./Navigation.css";
 
-function Navigation({ isSavedPage = false, onLoginClick, onRegisterClick }) {
-  const homeLinkClass = `navigation__link${!isSavedPage ? " navigation__link_active" : ""}`;
-  const savedLinkClass = `navigation__link${isSavedPage ? " navigation__link_active" : ""}`;
-
+function Navigation({
+  isSavedPage = false,
+  isLoggedIn = false,
+  userName = "",
+  onLoginClick,
+  onLogoutClick,
+}) {
   return (
-    <nav className="navigation">
-      <a className="navigation__logo" href="#">
+    <nav className={`navigation${isSavedPage ? " navigation_dark" : ""}`}>
+      <NavLink className="navigation__logo" to="/">
         NewsExplorer
-      </a>
+      </NavLink>
       <ul className="navigation__links">
         <li>
-          <a className={homeLinkClass} href="#">
+          <NavLink
+            className={({ isActive }) =>
+              `navigation__link${isActive && !isSavedPage ? " navigation__link_active" : ""}`
+            }
+            to="/"
+            end
+          >
             Home
-          </a>
+          </NavLink>
         </li>
         <li>
-          <a className={savedLinkClass} href="#">
+          <NavLink
+            className={({ isActive }) =>
+              `navigation__link${isActive || isSavedPage ? " navigation__link_active" : ""}`
+            }
+            to="/saved-news"
+          >
             Saved Articles
-          </a>
+          </NavLink>
         </li>
       </ul>
-      {!isSavedPage && (
-        <div className="navigation__auth">
+      <div className="navigation__auth">
+        {isLoggedIn ? (
+          <>
+            <span className="navigation__user">{userName}</span>
+            <button
+              type="button"
+              className="navigation__button"
+              onClick={onLogoutClick}
+            >
+              Sign out
+            </button>
+          </>
+        ) : (
           <button
             type="button"
             className="navigation__button"
             onClick={onLoginClick}
           >
-            {" "}
             Sign In
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </nav>
   );
 }

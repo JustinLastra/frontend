@@ -1,7 +1,127 @@
-/* .news-card */
-/* .news-card__image */
-/* .news-card__content */
-/* .news-card__date */
-/* .news-card__title */
-/* .news-card__description */
-/* .news-card__source */
+.news-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.news-card__image-wrapper {
+  position: relative;
+  height: 196px;
+  overflow: hidden;
+}
+
+.news-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.news-card__save {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.news-card__save_active {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.news-card__save_active:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.news-card__save-icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.news-card__save_saved .news-card__save-icon {
+  fill: #2f71e5;
+  stroke: #2f71e5;
+}
+
+.news-card__tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  padding: 9px 16px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+  font-size: 12px;
+  line-height: 14px;
+  color: #000000;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.news-card__save:not(.news-card__save_active):hover .news-card__tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.news-card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px;
+}
+
+.news-card__date {
+  margin: 0 0 16px;
+  font-size: 18px;
+  line-height: 20px;
+  color: #b6bcbf;
+}
+
+.news-card__title {
+  margin: 0 0 16px;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 30px;
+  color: #1a1b22;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-card__description {
+  margin: 0 0 16px;
+  font-size: 16px;
+  line-height: 22px;
+  color: #1a1b22;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-card__source {
+  margin: 0;
+  font-size: 16px;
+  line-height: 20px;
+  color: #b6bcbf;
+}

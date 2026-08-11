@@ -1,16 +1,55 @@
-# React + Vite
+# NewsExplorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React news search application that lets users find articles via the News API, sign in, and save articles to a personal account.
 
-Currently, two official plugins are available:
+**Live demo:** [https://justinlastra.github.io/frontend/](https://justinlastra.github.io/frontend/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Search news by keyword with validation and loading states
+- Display article cards with image, date, description, and source
+- Paginated results with "Show more" (3 articles at a time)
+- Sign in / Sign up modals with open/close behavior
+- Simulated auth and saved articles (localStorage)
+- Saved Articles page for logged-in users
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Local Development
 
-## Expanding the ESLint configuration
+1. Clone the repository and install dependencies:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+2. Create a `.env` file from the example and add your News API key:
+
+```bash
+cp .env.example .env
+```
+
+Get a free API key at [newsapi.org](https://newsapi.org).
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+If no API key is set, the app uses hard-coded mock article data for development.
+
+## Deployment
+
+Deploy to GitHub Pages:
+
+```bash
+npm run deploy
+```
+
+Production builds automatically use the News API proxy at `https://nomoreparties.co/news/v2/everything`.
+
+## Tech Stack
+
+- React 19
+- Vite
+- React Router
+- News API
