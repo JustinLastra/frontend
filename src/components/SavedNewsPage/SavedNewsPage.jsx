@@ -36,7 +36,7 @@ function SavedNewsPage({
       {count > 0 ? (
         <ul className="saved-news-page__grid">
           {savedArticles.map((article) => (
-            <li key={article.url} className="saved-news-page__item">
+            <li key={article.url || article._id} className="saved-news-page__item">
               <NewsCard
                 article={article}
                 isLoggedIn={isLoggedIn}

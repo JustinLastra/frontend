@@ -1,4 +1,5 @@
 import "./NewsCard.css";
+import { getSourceName } from "../../utils/articles.js";
 
 const placeholderImage =
   "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400";
@@ -54,7 +55,7 @@ function NewsCard({ article, isLoggedIn, isSaved, onSaveClick }) {
         </time>
         <h3 className="news-card__title">{article?.title}</h3>
         <p className="news-card__description">{article?.description}</p>
-        <p className="news-card__source">{article?.source?.name}</p>
+        <p className="news-card__source">{getSourceName(article)}</p>
       </div>
     </article>
   );

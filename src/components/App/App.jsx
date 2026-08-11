@@ -8,15 +8,13 @@ import LoginModal from "../LoginModal/LoginModal.jsx";
 import RegisterModal from "../RegisterModal/RegisterModal.jsx";
 import SavedNewsPage from "../SavedNewsPage/SavedNewsPage.jsx";
 import { searchNews } from "../../utils/NewsApi.js";
+import { checkToken, login, logout, register } from "../../utils/auth.js";
 import {
-  checkToken,
   deleteArticle,
+  findSavedArticle,
   getSavedArticles,
-  login,
-  logout,
-  register,
   saveArticle,
-} from "../../utils/mockAuth.js";
+} from "../../utils/main.js";
 import "./App.css";
 
 function App() {
@@ -25,26 +23,38 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const [savedArticles, setSavedArticles] = useState([]);
 
+  const loadSavedArticles = useCallback(async () => {
+    const saved = await getSavedArticles();
+    setSavedArticles(saved);
+  }, []);
+
   useEffect(() => {
     const initializeAuth = async () => {
-      const user = await checkToken();
-      if (user) {
-        setIsLoggedIn(true);
-        setUserName(user.name);
-        setSavedArticles(getSavedArticles());
+      try {
+        const user = await checkToken();
+
+        if (user) {
+          setIsLoggedIn(true);
+          setUserName(user.name);
+          await loadSavedArticles();
+        }
+      } catch {
+        logout();
       }
     };
 
     initializeAuth();
-  }, []);
+  }, [loadSavedArticles]);
 
   const handleSearch = useCallback(async (keyword) => {
+    setSearchKeyword(keyword);
     setIsLoading(true);
     setHasSearched(true);
     setError("");
@@ -87,7 +97,7 @@ function App() {
       const { user } = await login(credentials.email, credentials.password);
       setIsLoggedIn(true);
       setUserName(user.name);
-      setSavedArticles(getSavedArticles());
+      await loadSavedArticles();
       closeModals();
     } catch {
       setError(
@@ -99,13 +109,13 @@ function App() {
   const handleRegister = async (credentials) => {
     try {
       const { user } = await register(
+        credentials.name,
         credentials.email,
         credentials.password,
-        credentials.name,
       );
       setIsLoggedIn(true);
       setUserName(user.name);
-      setSavedArticles(getSavedArticles());
+      await loadSavedArticles();
       closeModals();
     } catch {
       setError(
@@ -126,13 +136,16 @@ function App() {
       return;
     }
 
-    const isSaved = savedArticles.some((item) => item.url === article.url);
+    const savedArticle = findSavedArticle(article, savedArticles);
 
     try {
-      const updated = isSaved
-        ? await deleteArticle(article.url)
-        : await saveArticle(article);
-      setSavedArticles(updated);
+      if (savedArticle) {
+        await deleteArticle(savedArticle._id);
+      } else {
+        await saveArticle(article, searchKeyword || "news");
+      }
+
+      await loadSavedArticles();
     } catch {
       setError(
         "Sorry, something went wrong during the request. Please try again later.",

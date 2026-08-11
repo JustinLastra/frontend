@@ -1,5 +1,6 @@
 import NewsCard from "../NewsCard/NewsCard.jsx";
 import Preloader from "../Preloader/Preloader.jsx";
+import { isArticleSaved } from "../../utils/main.js";
 import "./Main.css";
 
 function Main({
@@ -36,7 +37,7 @@ function Main({
                   <NewsCard
                     article={article}
                     isLoggedIn={isLoggedIn}
-                    isSaved={savedArticles.some((item) => item.url === article.url)}
+                    isSaved={isArticleSaved(article, savedArticles)}
                     onSaveClick={onSaveClick}
                   />
                 </li>
