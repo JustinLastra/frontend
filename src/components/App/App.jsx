@@ -43,7 +43,12 @@ function App() {
         if (user) {
           setIsLoggedIn(true);
           setUserName(user.name);
-          await loadSavedArticles();
+
+          try {
+            await loadSavedArticles();
+          } catch {
+            setSavedArticles([]);
+          }
         }
       } catch {
         logout();
