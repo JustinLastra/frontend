@@ -80,36 +80,61 @@ Search works with mock data if no News API key is set. Login and save features r
 
 This project includes a backend, so deploy to your Google Cloud VM (same approach as the WTWR project in Sprint 15). GitHub Pages is not suitable for full-stack apps.
 
-### On your VM
-
-1. Clone the repo and install dependencies:
+### First-time setup on your VM
 
 ```bash
+# 1. SSH into your Google Cloud VM, then clone the repo
 git clone https://github.com/JustinLastra/frontend.git
 cd frontend
-npm install
-cd backend && npm install && cd ..
+git checkout cursor/stage-1-submission-f65f
+
+# 2. Create backend environment file
+cp backend/.env.example backend/.env
+nano backend/.env
 ```
 
-2. Create `backend/.env` with production values (`PORT`, `JWT_SECRET`, `MONGODB_URI`).
+Set these in `backend/.env`:
 
-3. Build the frontend and start the server:
+```
+PORT=3001
+JWT_SECRET=your_long_random_secret
+MONGODB_URI=mongodb+srv://YOUR_ATLAS_CONNECTION_STRING
+NODE_ENV=production
+```
 
 ```bash
-npm run build
-cd backend
-NODE_ENV=production node app.js
+# 3. Run the one-command deploy script
+chmod +x deploy/deploy.sh
+./deploy/deploy.sh
 ```
 
-The backend serves the built frontend from the `dist/` folder on the same port.
-
-4. Configure PM2 (recommended):
+### Nginx (if you used it for WTWR)
 
 ```bash
-pm2 start app.js --name news-explorer-api --cwd /path/to/frontend/backend --env production
+sudo cp deploy/nginx.conf.example /etc/nginx/sites-available/default
+sudo nginx -t
+sudo systemctl restart nginx
 ```
 
-5. Update the **Live site** and **Project video** links at the top of this README with your actual URLs.
+Replace `justinlastra` in the nginx config with your TripleTen subdomain if different.
+
+### After every code update
+
+```bash
+cd ~/frontend
+git pull
+./deploy/deploy.sh
+```
+
+### Optional: GitHub Actions auto-deploy
+
+Add these secrets in GitHub → Settings → Secrets → Actions:
+
+- `GCP_HOST` — your VM external IP
+- `GCP_USER` — your VM username
+- `GCP_SSH_KEY` — your private SSH key
+
+Then run the **Deploy to Google Cloud VM** workflow manually from the Actions tab.
 
 ## Tech stack
 
