@@ -1,25 +1,59 @@
 import NewsCard from "../NewsCard/NewsCard.jsx";
 import Preloader from "../Preloader/Preloader.jsx";
+import { isArticleSaved } from "../../utils/main.js";
 import "./Main.css";
 
-function Main({ articles, isLoading }) {
+function Main({
+  articles,
+  isLoading,
+  error,
+  hasSearched,
+  onShowMore,
+  hasMore,
+  isLoggedIn,
+  savedArticles,
+  onSaveClick,
+}) {
+  if (!hasSearched) {
+    return null;
+  }
+
   const hasArticles = articles.length > 0;
 
   return (
     <main className="main">
       <section className="main__results">
-        <h2 className="main__title" />
         {isLoading && <Preloader />}
-        {!isLoading && hasArticles && (
-          <ul className="main__grid">
-            {articles.map((article) => (
-              <li className="main__item" key={article.id}>
-                <NewsCard article={article} />
-              </li>
-            ))}
-          </ul>
+        {!isLoading && error && <p className="main__message main__message_error">{error}</p>}
+        {!isLoading && !error && !hasArticles && (
+          <p className="main__message">Nothing found</p>
         )}
-        {!isLoading && !hasArticles && <p />}
+        {!isLoading && !error && hasArticles && (
+          <>
+            <h2 className="main__title">Search results</h2>
+            <ul className="main__grid">
+              {articles.map((article) => (
+                <li className="main__item" key={article.url}>
+                  <NewsCard
+                    article={article}
+                    isLoggedIn={isLoggedIn}
+                    isSaved={isArticleSaved(article, savedArticles)}
+                    onSaveClick={onSaveClick}
+                  />
+                </li>
+              ))}
+            </ul>
+            {hasMore && (
+              <button
+                type="button"
+                className="main__show-more"
+                onClick={onShowMore}
+              >
+                Show more
+              </button>
+            )}
+          </>
+        )}
       </section>
     </main>
   );

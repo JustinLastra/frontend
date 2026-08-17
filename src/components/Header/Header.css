@@ -3,21 +3,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url(../../assets/Header-background.jpg) no-repeat center center;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(26, 27, 34, 0.5) 0%,
+      rgba(26, 27, 34, 0.4) 100%
+    ),
+    url(../../assets/Header-background.jpg) no-repeat center center,
+    linear-gradient(135deg, #1a1b22 0%, #2f3a5c 50%, #1a1b22 100%);
   background-size: cover;
   min-height: 576px;
 }
 
 .header::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(26, 27, 34, 0.5) 0%,
-    rgba(26, 27, 34, 0.4) 100%
-  );
-  pointer-events: none;
+  display: none;
 }
 
 .header > * {

@@ -1,3 +1,8 @@
+.search-form-wrapper {
+  width: 100%;
+  max-width: 608px;
+}
+
 .search-form {
   display: flex;
   align-items: center;
@@ -30,7 +35,7 @@
 
 .search-form__button {
   border: 0;
-  border-radius:  100px 100px 0;
+  border-radius: 100px 100px 0;
   flex-shrink: 0;
   width: 168px;
   height: 64px;
@@ -42,11 +47,16 @@
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(14, 26, 57, 0.2);
   margin: -1px -1px -1px 0;
-  
-
-  
 }
 
 .search-form__button:hover {
   background: #347eff;
+}
+
+.search-form__error {
+  margin: 12px 0 0 24px;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ff0000;
+  text-align: left;
 }
