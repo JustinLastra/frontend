@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { errors } from "celebrate";
 import { connectDatabase } from "./config.js";
@@ -25,14 +26,15 @@ app.use("/", authRoutes);
 app.use("/", articleRoutes);
 app.use(errors());
 
-if (isProduction) {
-  const distPath = path.join(__dirname, "../dist");
+const distPath = path.join(__dirname, "../dist");
+const hasDist = fs.existsSync(path.join(distPath, "index.html"));
 
+if (hasDist) {
   app.use(express.static(distPath));
   app.get("*", (req, res) => {
     res.sendFile(path.join(distPath, "index.html"));
   });
-} else {
+} else if (!isProduction) {
   app.get("/", (req, res) => {
     res.send({ message: "NewsExplorer API" });
   });
