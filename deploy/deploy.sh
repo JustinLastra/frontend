@@ -8,8 +8,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 
-echo "==> Installing frontend dependencies..."
-npm install
+echo "==> Installing frontend dependencies (including devDependencies for build)..."
+npm install --include=dev
 
 echo "==> Installing backend dependencies..."
 npm install --prefix backend
