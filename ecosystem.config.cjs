@@ -4,6 +4,7 @@ module.exports = {
       name: "news-explorer",
       script: "app.js",
       cwd: "./backend",
+      env_file: "./backend/.env",
       env: {
         NODE_ENV: "production",
       },
