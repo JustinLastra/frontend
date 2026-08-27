@@ -44,8 +44,15 @@ if ! command -v pm2 >/dev/null 2>&1; then
 fi
 
 pm2 delete news-explorer 2>/dev/null || true
-pm2 start ecosystem.config.cjs
+pm2 start ecosystem.config.cjs --update-env
 pm2 save
+
+if command -v nginx >/dev/null 2>&1; then
+  echo "==> Configuring Nginx..."
+  sudo cp deploy/nginx.conf.example /etc/nginx/sites-available/default
+  sudo nginx -t
+  sudo systemctl restart nginx
+fi
 
 echo ""
 echo "Deploy complete!"
