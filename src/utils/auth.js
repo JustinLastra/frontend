@@ -52,6 +52,10 @@ export async function checkToken() {
     return null;
   }
 
+  if (!BASE_URL) {
+    return null;
+  }
+
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
       headers: authHeaders(),
