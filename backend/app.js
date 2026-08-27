@@ -18,7 +18,12 @@ const isProduction = NODE_ENV === "production";
 
 const app = express();
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  }),
+);
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
