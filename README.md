@@ -69,12 +69,21 @@ Deployed on **Google Cloud VM** (not GitHub Pages):
 - Nginx proxies port 80 to the backend on port 3001
 - MongoDB Atlas for database storage
 
-### Update deployment on VM
+### Update deployment on VM (required after every push)
+
+The live site at http://35.253.182.214 only updates after you run this on your Google Cloud VM:
 
 ```bash
 cd ~/frontend
 git pull origin cursor/stage-1-submission-f65f
+chmod +x deploy/deploy.sh
 ./deploy/deploy.sh
+```
+
+Verify the new build is live — the JS bundle filename should change and signup should hit `/signup` (not `localhost:3001`):
+
+```bash
+curl -s http://35.253.182.214 | grep -o 'index-[^"]*\.js'
 ```
 
 ## API endpoints
