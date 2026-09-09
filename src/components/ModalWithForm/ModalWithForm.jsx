@@ -10,6 +10,7 @@ function ModalWithForm({
   submitLabel,
   linkText,
   onLinkClick,
+  error,
   children,
 }) {
   useEffect(() => {
@@ -47,8 +48,9 @@ function ModalWithForm({
           aria-label="Close"
         />
         <h2 className="modal__title">{title}</h2>
-        <form className="modal__form" name={name} onSubmit={onSubmit}>
+        <form className="modal__form" name={name} onSubmit={onSubmit} noValidate>
           {children}
+          {error && <p className="modal__error">{error}</p>}
           <button type="submit" className="modal__submit">
             {submitLabel ?? "Submit"}
           </button>

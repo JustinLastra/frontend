@@ -34,6 +34,13 @@ if [ ! -f .env ]; then
   cp .env.example .env
 fi
 
+echo "==> Ensuring production API URL uses same-origin requests..."
+if grep -q '^VITE_API_BASE_URL=' .env; then
+  sed -i 's|^VITE_API_BASE_URL=.*|VITE_API_BASE_URL=|' .env
+else
+  echo "VITE_API_BASE_URL=" >> .env
+fi
+
 echo "==> Building frontend..."
 npm run build
 

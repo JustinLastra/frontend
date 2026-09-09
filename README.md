@@ -6,7 +6,7 @@ A full-stack news search application that lets users find articles via the News 
 
 - **Live site:** [http://35.253.182.214](http://35.253.182.214)
 - **Pull request:** [https://github.com/JustinLastra/frontend/pull/3](https://github.com/JustinLastra/frontend/pull/3)
-- **Project video:** [Watch the project walkthrough](https://YOUR-VIDEO-LINK-HERE)
+- **Project video:** Replace `VITE_PROJECT_VIDEO_URL` in `.env` with your pitch video link, then update this line before resubmitting
 
 ## About the project
 

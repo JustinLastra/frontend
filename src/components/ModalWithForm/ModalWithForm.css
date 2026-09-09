@@ -111,3 +111,46 @@
   cursor: pointer;
   text-align: center;
 }
+
+.modal__error {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ff0000;
+}
+
+.modal__field-error {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    align-items: flex-end;
+  }
+
+  .modal__content {
+    max-width: none;
+    border-radius: 16px 16px 0 0;
+    padding: 24px 16px 32px;
+  }
+
+  .modal__close {
+    top: -32px;
+    right: 0;
+  }
+}
+
+@media (max-width: 320px) {
+  .modal__title {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .modal__submit {
+    height: 56px;
+    font-size: 16px;
+  }
+}

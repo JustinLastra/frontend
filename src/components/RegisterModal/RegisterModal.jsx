@@ -1,13 +1,48 @@
+import { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.jsx";
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from "../../utils/validation.js";
 
-function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
+function RegisterModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  onSwitchToLogin,
+  serverError = "",
+}) {
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const handleClose = () => {
+    setFieldErrors({});
+    onClose();
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const name = formData.get("name");
+
+    const nextErrors = {
+      email: validateEmail(email),
+      password: validatePassword(password),
+      name: validateName(name),
+    };
+
+    setFieldErrors(nextErrors);
+
+    if (nextErrors.email || nextErrors.password || nextErrors.name) {
+      return;
+    }
+
     onSubmit({
-      email: formData.get("email"),
-      password: formData.get("password"),
-      name: formData.get("name"),
+      email: email.trim(),
+      password,
+      name: name.trim(),
     });
   };
 
@@ -18,9 +53,10 @@ function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
       submitLabel="Sign up"
       linkText="or Sign in"
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       onSubmit={handleSubmit}
       onLinkClick={onSwitchToLogin}
+      error={serverError}
     >
       <label className="modal__label">
         Email
@@ -29,8 +65,10 @@ function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
           type="email"
           name="email"
           placeholder="Enter email"
-          required
         />
+        {fieldErrors.email && (
+          <span className="modal__field-error">{fieldErrors.email}</span>
+        )}
       </label>
       <label className="modal__label">
         Password
@@ -39,8 +77,11 @@ function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
           type="password"
           name="password"
           placeholder="Enter password"
-          required
+          minLength={8}
         />
+        {fieldErrors.password && (
+          <span className="modal__field-error">{fieldErrors.password}</span>
+        )}
       </label>
       <label className="modal__label">
         Name
@@ -49,8 +90,11 @@ function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
           type="text"
           name="name"
           placeholder="Enter your name"
-          required
+          maxLength={30}
         />
+        {fieldErrors.name && (
+          <span className="modal__field-error">{fieldErrors.name}</span>
+        )}
       </label>
     </ModalWithForm>
   );

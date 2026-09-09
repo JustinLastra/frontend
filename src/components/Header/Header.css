@@ -58,3 +58,37 @@
   line-height: 1.5;
   opacity: 0.9;
 }
+
+@media (max-width: 768px) {
+  .header {
+    min-height: auto;
+  }
+
+  .header__content {
+    padding: 40px 16px 48px;
+  }
+
+  .header__title {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  .header__description {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 320px) {
+  .header__content {
+    padding: 32px 16px 40px;
+  }
+
+  .header__title {
+    font-size: 30px;
+  }
+
+  .header__description {
+    font-size: 14px;
+  }
+}
