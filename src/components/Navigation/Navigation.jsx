@@ -51,56 +51,56 @@ function Navigation({
         />
       </button>
       <div className="navigation__menu">
-      <ul className="navigation__links">
-        <li>
-          <NavLink
-            className={({ isActive }) =>
-              `navigation__link${isActive && !isSavedPage ? " navigation__link_active" : ""}`
-            }
-            to="/"
-            end
-            onClick={closeMenu}
-          >
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className={({ isActive }) =>
-              `navigation__link${isActive || isSavedPage ? " navigation__link_active" : ""}`
-            }
-            to="/saved-news"
-            onClick={closeMenu}
-          >
-            Saved Articles
-          </NavLink>
-        </li>
-      </ul>
-      <div className="navigation__auth">
-        {isLoggedIn ? (
-          <button
-            type="button"
-            className="navigation__button navigation__button_signout"
-            onClick={handleLogoutClick}
-            aria-label={`Sign out ${userName}`}
-          >
-            <span className="navigation__user">{userName}</span>
-            <img
-              className="navigation__icon"
-              src={useDarkIcons ? logoutDark : logoutWhite}
-              alt=""
-            />
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="navigation__button"
-            onClick={handleLoginClick}
-          >
-            Sign In
-          </button>
-        )}
-      </div>
+        <ul className="navigation__links">
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                `navigation__link${isActive && !isSavedPage ? " navigation__link_active" : ""}`
+              }
+              to="/"
+              end
+              onClick={closeMenu}
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                `navigation__link${isActive || isSavedPage ? " navigation__link_active" : ""}`
+              }
+              to="/saved-news"
+              onClick={closeMenu}
+            >
+              Saved Articles
+            </NavLink>
+          </li>
+        </ul>
+        <div className="navigation__auth">
+          {isLoggedIn ? (
+            <button
+              type="button"
+              className="navigation__button navigation__button_signout"
+              onClick={handleLogoutClick}
+              aria-label={`Sign out ${userName}`}
+            >
+              <span className="navigation__user">{userName}</span>
+              <img
+                className="navigation__icon"
+                src={useDarkIcons ? logoutDark : logoutWhite}
+                alt=""
+              />
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="navigation__button"
+              onClick={handleLoginClick}
+            >
+              Sign In
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );

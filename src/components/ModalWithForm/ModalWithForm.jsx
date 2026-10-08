@@ -59,11 +59,7 @@ function ModalWithForm({
             {submitLabel ?? "Submit"}
           </button>
           {linkText && (
-            <button
-              type="button"
-              className="modal__link"
-              onClick={onLinkClick}
-            >
+            <button type="button" className="modal__link" onClick={onLinkClick}>
               {linkText}
             </button>
           )}
