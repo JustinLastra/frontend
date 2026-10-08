@@ -13,6 +13,7 @@ function Main({
   isLoggedIn,
   savedArticles,
   onSaveClick,
+  onLoginClick,
 }) {
   if (!hasSearched) {
     return null;
@@ -39,6 +40,7 @@ function Main({
                     isLoggedIn={isLoggedIn}
                     isSaved={isArticleSaved(article, savedArticles)}
                     onSaveClick={onSaveClick}
+                    onLoginClick={onLoginClick}
                   />
                 </li>
               ))}

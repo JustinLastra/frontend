@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Header from "../Header/Header.jsx";
 import Main from "../Main/Main.jsx";
 import About from "../About/About.jsx";
@@ -7,6 +7,7 @@ import Footer from "../Footer/Footer.jsx";
 import LoginModal from "../LoginModal/LoginModal.jsx";
 import RegisterModal from "../RegisterModal/RegisterModal.jsx";
 import SavedNewsPage from "../SavedNewsPage/SavedNewsPage.jsx";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
 import { searchNews } from "../../utils/NewsApi.js";
 import { checkToken, login, logout, register } from "../../utils/auth.js";
 import {
@@ -17,6 +18,14 @@ import {
 } from "../../utils/main.js";
 import "./App.css";
 
+function getAuthErrorMessage(error) {
+  if (error?.message) {
+    return error.message;
+  }
+
+  return "Sorry, something went wrong during the request. Please try again later.";
+}
+
 function App() {
   const [articles, setArticles] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
@@ -26,10 +35,11 @@ function App() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const [registerError, setRegisterError] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const [savedArticles, setSavedArticles] = useState([]);
-  const [authError, setAuthError] = useState("");
 
   const loadSavedArticles = useCallback(async () => {
     const saved = await getSavedArticles();
@@ -84,24 +94,29 @@ function App() {
   };
 
   const openLoginModal = () => {
-    setAuthError("");
+    setRegisterError("");
     setIsRegisterModalOpen(false);
+    setLoginError("");
     setIsLoginModalOpen(true);
   };
 
   const openRegisterModal = () => {
-    setAuthError("");
+    setLoginError("");
     setIsLoginModalOpen(false);
+    setRegisterError("");
     setIsRegisterModalOpen(true);
   };
 
   const closeModals = () => {
-    setAuthError("");
     setIsLoginModalOpen(false);
     setIsRegisterModalOpen(false);
+    setLoginError("");
+    setRegisterError("");
   };
 
   const handleLogin = async (credentials) => {
+    setLoginError("");
+
     try {
       const { user } = await login(credentials.email, credentials.password);
       setIsLoggedIn(true);
@@ -109,11 +124,13 @@ function App() {
       await loadSavedArticles();
       closeModals();
     } catch (err) {
-      setAuthError(err.message || "Sign in failed. Please try again.");
+      setLoginError(getAuthErrorMessage(err));
     }
   };
 
   const handleRegister = async (credentials) => {
+    setRegisterError("");
+
     try {
       const { user } = await register(
         credentials.name,
@@ -125,11 +142,7 @@ function App() {
       await loadSavedArticles();
       closeModals();
     } catch (err) {
-      setAuthError(
-        err instanceof TypeError
-          ? "Cannot reach the server. Please try again later."
-          : err.message || "Sign up failed. Please try again.",
-      );
+      setRegisterError(getAuthErrorMessage(err));
     }
   };
 
@@ -142,6 +155,7 @@ function App() {
 
   const handleSaveClick = async (article) => {
     if (!isLoggedIn) {
+      openLoginModal();
       return;
     }
 
@@ -189,6 +203,7 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 savedArticles={savedArticles}
                 onSaveClick={handleSaveClick}
+                onLoginClick={openLoginModal}
               />
               <About />
               <Footer />
@@ -198,7 +213,7 @@ function App() {
         <Route
           path="/saved-news"
           element={
-            isLoggedIn ? (
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
               <SavedNewsPage
                 savedArticles={savedArticles}
                 userName={userName}
@@ -207,9 +222,7 @@ function App() {
                 onLoginClick={openLoginModal}
                 onLogoutClick={handleLogout}
               />
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </ProtectedRoute>
           }
         />
       </Routes>
@@ -219,14 +232,14 @@ function App() {
         onClose={closeModals}
         onSubmit={handleLogin}
         onSwitchToRegister={openRegisterModal}
-        errorMessage={authError}
+        serverError={loginError}
       />
       <RegisterModal
         isOpen={isRegisterModalOpen}
         onClose={closeModals}
         onSubmit={handleRegister}
         onSwitchToLogin={openLoginModal}
-        errorMessage={authError}
+        serverError={registerError}
       />
     </div>
   );

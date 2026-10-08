@@ -2,6 +2,9 @@ name: Deploy to Google Cloud VM
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - cursor/stage-1-submission-f65f
 
 jobs:
   deploy:

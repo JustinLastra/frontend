@@ -19,9 +19,21 @@ function formatDate(dateString) {
   });
 }
 
-function NewsCard({ article, isLoggedIn, isSaved, isSavedPage, onSaveClick }) {
+function NewsCard({
+  article,
+  isLoggedIn,
+  isSaved,
+  isSavedPage,
+  onSaveClick,
+  onLoginClick,
+}) {
   const handleSaveClick = () => {
-    if (isLoggedIn && onSaveClick) {
+    if (!isLoggedIn) {
+      onLoginClick?.();
+      return;
+    }
+
+    if (onSaveClick) {
       onSaveClick(article);
     }
   };

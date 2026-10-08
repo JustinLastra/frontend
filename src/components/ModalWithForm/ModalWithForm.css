@@ -80,10 +80,10 @@
 }
 
 .modal__error {
-  margin: 8px 0 0;
-  color: #d0021b;
+  margin: 0 0 12px;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 18px;
+  color: #ff0000;
 }
 
 .modal__submit {
@@ -113,7 +113,14 @@
   text-align: center;
 }
 
-@media (max-width: 640px) {
+.modal__field-error {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+}
+
+@media (max-width: 768px) {
   .modal {
     align-items: flex-end;
   }
@@ -121,7 +128,7 @@
   .modal__content {
     max-width: none;
     height: calc(100% - 56px);
-    padding: 16px;
+    padding: 24px 16px 32px;
     border-radius: 16px 16px 0 0;
     overflow-y: auto;
   }
@@ -129,5 +136,17 @@
   .modal__close {
     top: -48px;
     right: 8px;
+  }
+}
+
+@media (max-width: 320px) {
+  .modal__title {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .modal__submit {
+    height: 56px;
+    font-size: 16px;
   }
 }

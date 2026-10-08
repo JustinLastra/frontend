@@ -6,7 +6,7 @@ A full-stack news search application that lets users find articles via the News 
 
 - **Live site:** [http://35.253.182.214](http://35.253.182.214)
 - **Pull request:** [https://github.com/JustinLastra/frontend/pull/3](https://github.com/JustinLastra/frontend/pull/3)
-- **Project video:** [Watch the project walkthrough](https://YOUR-VIDEO-LINK-HERE)
+- **Project video:** Replace `VITE_PROJECT_VIDEO_URL` in `.env` with your pitch video link, then update this line before resubmitting
 
 ## About the project
 
@@ -69,12 +69,21 @@ Deployed on **Google Cloud VM** (not GitHub Pages):
 - Nginx proxies port 80 to the backend on port 3001
 - MongoDB Atlas for database storage
 
-### Update deployment on VM
+### Update deployment on VM (required after every push)
+
+The live site at http://35.253.182.214 only updates after you run this on your Google Cloud VM:
 
 ```bash
 cd ~/frontend
 git pull origin cursor/stage-1-submission-f65f
+chmod +x deploy/deploy.sh
 ./deploy/deploy.sh
+```
+
+Verify the new build is live — the JS bundle filename should change and signup should hit `/signup` (not `localhost:3001`):
+
+```bash
+curl -s http://35.253.182.214 | grep -o 'index-[^"]*\.js'
 ```
 
 ## API endpoints

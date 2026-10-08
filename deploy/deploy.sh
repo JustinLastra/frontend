@@ -34,8 +34,24 @@ if [ ! -f .env ]; then
   cp .env.example .env
 fi
 
+echo "==> Ensuring production API URL uses same-origin requests..."
+if grep -q '^VITE_API_BASE_URL=' .env; then
+  sed -i 's|^VITE_API_BASE_URL=.*|VITE_API_BASE_URL=|' .env
+else
+  echo "VITE_API_BASE_URL=" >> .env
+fi
+
 echo "==> Building frontend..."
 npm run build
+
+if grep -rq "localhost:3001" dist/; then
+  echo ""
+  echo "ERROR: Production build still references localhost:3001."
+  echo "Ensure VITE_API_BASE_URL is empty in .env and .env.production, then rebuild."
+  exit 1
+fi
+
+echo "==> Production build verified (no localhost API URL)."
 
 echo "==> Starting/restarting backend with PM2..."
 if ! command -v pm2 >/dev/null 2>&1; then
