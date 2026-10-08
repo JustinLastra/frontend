@@ -1,6 +1,12 @@
+@import "./vendor/fonts/fonts.css";
+
+:root {
+  color-scheme: light;
+}
+
 body {
   margin: 0;
-  font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", sans-serif;
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
   color: #1a1b22;
   background: #ffffff;
   -webkit-font-smoothing: antialiased;

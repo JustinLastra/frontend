@@ -1,16 +1,105 @@
-# React + Vite
+# NewsExplorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack news search application that lets users find articles via the News API, sign in, and save articles to a personal account.
 
-Currently, two official plugins are available:
+## Project links
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Live site:** [http://35.253.182.214](http://35.253.182.214)
+- **Pull request:** [https://github.com/JustinLastra/frontend/pull/3](https://github.com/JustinLastra/frontend/pull/3)
+- **Project video:** Replace `VITE_PROJECT_VIDEO_URL` in `.env` with your pitch video link, then update this line before resubmitting
 
-## React Compiler
+## About the project
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+NewsExplorer allows users to search for news articles by keyword, view results with pagination, create an account, and save articles to a personal collection.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Search news by keyword with validation and loading states
+- Display article cards with image, date, description, and source
+- Paginated results with "Show more" (3 articles at a time)
+- Sign in / Sign up modals with open/close behavior
+- JWT authentication with Express backend
+- Save and delete articles via REST API
+- Saved Articles page for logged-in users
+
+## For reviewers — run locally
+
+### Frontend only (search, modals, UI)
+
+Search works with mock data. No backend required.
+
+```bash
+git clone https://github.com/JustinLastra/frontend.git
+cd frontend
+git checkout cursor/stage-1-submission-f65f
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173**
+
+### Full app (login + save articles)
+
+**Terminal 1 — backend:**
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Add MongoDB Atlas connection string to backend/.env
+npm run dev
+```
+
+**Terminal 2 — frontend:**
+```bash
+npm install
+cp .env.example .env
+# Set VITE_API_BASE_URL=http://localhost:3001
+npm run dev
+```
+
+Open **http://localhost:5173**
+
+## Deployment
+
+Deployed on **Google Cloud VM** (not GitHub Pages):
+
+**http://35.253.182.214**
+
+- Frontend built with Vite and served by Express
+- Nginx proxies port 80 to the backend on port 3001
+- MongoDB Atlas for database storage
+
+### Update deployment on VM (required after every push)
+
+The live site at http://35.253.182.214 only updates after you run this on your Google Cloud VM:
+
+```bash
+cd ~/frontend
+git pull origin cursor/stage-1-submission-f65f
+chmod +x deploy/deploy.sh
+./deploy/deploy.sh
+```
+
+Verify the new build is live — the JS bundle filename should change and signup should hit `/signup` (not `localhost:3001`):
+
+```bash
+curl -s http://35.253.182.214 | grep -o 'index-[^"]*\.js'
+```
+
+## API endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/signup` | No | Register a new user |
+| POST | `/signin` | No | Sign in and receive JWT |
+| GET | `/users/me` | Bearer JWT | Get current user |
+| GET | `/articles` | Bearer JWT | Get saved articles |
+| POST | `/articles` | Bearer JWT | Save an article |
+| DELETE | `/articles/:articleId` | Bearer JWT | Delete a saved article |
+
+## Tech stack
+
+- **Frontend:** React 19, Vite, React Router
+- **Backend:** Express, MongoDB, Mongoose, JWT, bcrypt
+- **News:** News API
+- **Deployment:** Google Cloud VM, Nginx, PM2, MongoDB Atlas

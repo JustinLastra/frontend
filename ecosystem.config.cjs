@@ -1,0 +1,17 @@
+module.exports = {
+  apps: [
+    {
+      name: "news-explorer",
+      script: "app.js",
+      cwd: "./backend",
+      env_file: "./backend/.env",
+      env: {
+        NODE_ENV: "production",
+      },
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "300M",
+    },
+  ],
+};
