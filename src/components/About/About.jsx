@@ -3,16 +3,28 @@ import "./About.css";
 function About() {
   return (
     <section className="about">
-      <div className="about__avatar" aria-hidden="true" />
+      <div className="about__avatar">
+        <img
+          className="about__photo"
+          src={`${import.meta.env.BASE_URL}Justin-lastra.jpeg`}
+          alt="Justin Lastra"
+          onError={(event) => {
+            event.currentTarget.style.display = "none";
+          }}
+        />
+      </div>
       <div className="about__content">
         <h2 className="about__title">About the author</h2>
         <p className="about__text">
-          This block describes the project author. Here you should indicate your
-          name, what you do, and which development technologies you know.
+          Hi, I'm Justin Lastra, a web developer who enjoys building clean,
+          accessible and user-friendly applications. I work with React,
+          JavaScript, HTML and CSS on the front end, and Node.js, Express and
+          MongoDB on the back end.
         </p>
         <p className="about__text">
-          You can also talk about your experience with TripleTen, what you
-          learned there, and how you can help potential customers.
+          Through TripleTen's software engineering program I learned to take a
+          project from design to deployment. I can help you turn an idea into a
+          polished, responsive product.
         </p>
       </div>
     </section>

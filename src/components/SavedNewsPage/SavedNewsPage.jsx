@@ -3,6 +3,20 @@ import NewsCard from "../NewsCard/NewsCard.jsx";
 import Footer from "../Footer/Footer.jsx";
 import "./SavedNewsPage.css";
 
+function formatKeywords(articles) {
+  const counts = new Map();
+
+  articles.forEach(({ keyword }) => {
+    if (keyword) {
+      counts.set(keyword, (counts.get(keyword) || 0) + 1);
+    }
+  });
+
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([keyword]) => keyword);
+}
+
 function SavedNewsPage({
   savedArticles = [],
   userName = "",
@@ -17,6 +31,10 @@ function SavedNewsPage({
       ? `${userName}, you have no saved articles`
       : `${userName}, you have ${count} saved ${count === 1 ? "article" : "articles"}`;
 
+  const keywords = formatKeywords(savedArticles);
+  const shownKeywords = keywords.length > 3 ? keywords.slice(0, 2) : keywords;
+  const otherCount = keywords.length - shownKeywords.length;
+
   return (
     <section id="saved-news" className="saved-news-page">
       <header className="saved-news-page__header">
@@ -30,6 +48,27 @@ function SavedNewsPage({
         <div className="saved-news-page__info">
           <p className="saved-news-page__label">Saved articles</p>
           <h2 className="saved-news-page__title">{title}</h2>
+          {keywords.length > 0 && (
+            <p className="saved-news-page__keywords">
+              By keywords:{" "}
+              <strong className="saved-news-page__keywords-list">
+                {shownKeywords.map((keyword, index) => {
+                  const isLast = index === shownKeywords.length - 1;
+                  const hasOthers = otherCount > 0;
+                  let separator = "";
+
+                  if (!isLast) {
+                    separator =
+                      shownKeywords.length === 2 && !hasOthers ? " and " : ", ";
+                  } else if (hasOthers) {
+                    separator = `, and ${otherCount} other`;
+                  }
+
+                  return `${keyword}${separator}`;
+                })}
+              </strong>
+            </p>
+          )}
         </div>
       </header>
 
@@ -41,6 +80,7 @@ function SavedNewsPage({
                 article={article}
                 isLoggedIn={isLoggedIn}
                 isSaved
+                isSavedPage
                 onSaveClick={onSaveClick}
               />
             </li>

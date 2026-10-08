@@ -1,6 +1,12 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm.jsx";
 
-function LoginModal({ isOpen, onClose, onSubmit, onSwitchToRegister }) {
+function LoginModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  onSwitchToRegister,
+  errorMessage,
+}) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -20,6 +26,7 @@ function LoginModal({ isOpen, onClose, onSubmit, onSwitchToRegister }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       onLinkClick={onSwitchToRegister}
+      errorMessage={errorMessage}
     >
       <label className="modal__label">
         Email

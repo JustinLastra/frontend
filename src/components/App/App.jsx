@@ -29,6 +29,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const [savedArticles, setSavedArticles] = useState([]);
+  const [authError, setAuthError] = useState("");
 
   const loadSavedArticles = useCallback(async () => {
     const saved = await getSavedArticles();
@@ -83,16 +84,19 @@ function App() {
   };
 
   const openLoginModal = () => {
+    setAuthError("");
     setIsRegisterModalOpen(false);
     setIsLoginModalOpen(true);
   };
 
   const openRegisterModal = () => {
+    setAuthError("");
     setIsLoginModalOpen(false);
     setIsRegisterModalOpen(true);
   };
 
   const closeModals = () => {
+    setAuthError("");
     setIsLoginModalOpen(false);
     setIsRegisterModalOpen(false);
   };
@@ -104,10 +108,8 @@ function App() {
       setUserName(user.name);
       await loadSavedArticles();
       closeModals();
-    } catch {
-      setError(
-        "Sorry, something went wrong during the request. Please try again later.",
-      );
+    } catch (err) {
+      setAuthError(err.message || "Sign in failed. Please try again.");
     }
   };
 
@@ -122,9 +124,11 @@ function App() {
       setUserName(user.name);
       await loadSavedArticles();
       closeModals();
-    } catch {
-      setError(
-        "Sorry, something went wrong during the request. Please try again later.",
+    } catch (err) {
+      setAuthError(
+        err instanceof TypeError
+          ? "Cannot reach the server. Please try again later."
+          : err.message || "Sign up failed. Please try again.",
       );
     }
   };
@@ -215,12 +219,14 @@ function App() {
         onClose={closeModals}
         onSubmit={handleLogin}
         onSwitchToRegister={openRegisterModal}
+        errorMessage={authError}
       />
       <RegisterModal
         isOpen={isRegisterModalOpen}
         onClose={closeModals}
         onSubmit={handleRegister}
         onSwitchToLogin={openLoginModal}
+        errorMessage={authError}
       />
     </div>
   );

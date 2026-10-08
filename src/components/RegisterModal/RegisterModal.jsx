@@ -1,6 +1,12 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm.jsx";
 
-function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
+function RegisterModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  onSwitchToLogin,
+  errorMessage,
+}) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -21,6 +27,7 @@ function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       onLinkClick={onSwitchToLogin}
+      errorMessage={errorMessage}
     >
       <label className="modal__label">
         Email
@@ -39,6 +46,7 @@ function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
           type="password"
           name="password"
           placeholder="Enter password"
+          minLength={8}
           required
         />
       </label>
@@ -49,6 +57,8 @@ function RegisterModal({ isOpen, onClose, onSubmit, onSwitchToLogin }) {
           type="text"
           name="name"
           placeholder="Enter your name"
+          minLength={2}
+          maxLength={30}
           required
         />
       </label>
